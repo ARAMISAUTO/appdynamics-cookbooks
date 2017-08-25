@@ -7,7 +7,7 @@ driver:
 
 provisioner:
   name: chef_zero
-  require_chef_omnibus: 12
+  require_chef_omnibus: 13
   attributes:
     appdynamics:
       version: '4.3.2.3'
