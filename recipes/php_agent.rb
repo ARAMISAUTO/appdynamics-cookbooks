@@ -119,12 +119,13 @@ when 'debian', 'ubuntu'
 
   # Enable appdynamics extension
   execute 'php5enmod appdynamics_agent' do
-    notifies :reload, 'service[apache2]' if resource_exists['service[apache2]']
+    notifies :restart, 'service[apache2]' if resource_exists['service[apache2]']
   end
 end
 
 # TODO : Create appdynamics-proxy service
 # TODO : Handle JVM configuration
+# TODO : User https://supermarket.chef.io/cookbooks/poise-service
 # https://github.com/ARAMISAUTO/com.aramisauto.platform/blob/master/provisioners/salt/srv/salt/base/appdynamics/php.sls
 # bash ./runProxy -d /opt/appdynamics/appdynamics-php-agent/proxy -r /opt/appdynamics/appdynamics-php-agent/proxy /tmp/proxy.communication /opt/appdynamics/appdynamics-php-agent/logs
 systemd_unit 'appdynamics-proxy.service' do
