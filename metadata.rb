@@ -9,12 +9,11 @@ source_url        'https://github.com/appdynamics/appdynamics-cookbooks'        
 issues_url        'https://github.com/appdynamics/appdynamics-cookbooks/issues' if respond_to?(:issues_url)
 
 depends 'apache2', '~> 5.0.0'
-depends 'apt', '~> 3.0.0'
+depends 'apt', '~> 6.1.4'
 depends 'ark', '~> 1.1.0'
 depends 'java', '~> 1.42.0'
 depends 'nodejs', '~> 2.4.4'
 depends 'java', '~> 1.42.0'
-depends 'apt', '~> 3.0.0'
 depends 'powershell', '~> 3.0.0'
 depends 'poise-python', '~> 1.6.0'
 depends 'windows', '~> 1.44.3'
