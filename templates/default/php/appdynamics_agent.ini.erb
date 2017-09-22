@@ -1,0 +1,13 @@
+[AppDynamics Agent]
+extension = appdynamics_agent.so
+agent.log4cxx_config = <%= @agent_install_dir %>/phpagent/php/conf/appdynamics_agent_log4cxx.xml
+agent.php_agent_root = <%= @agent_install_dir %>/phpagent
+agent.controller.hostName = <%= @controller_host %>
+agent.controller.port = <%= @controller_port %>
+agent.applicationName = <%= @app_name %>
+agent.tierName = <%= @tier_name %>
+agent.nodeName = <%= @node_name %>
+agent.accountName = <%= @controller_user %>
+agent.accountAccessKey = <%= @controller_accesskey %>
+agent.auto_launch_proxy = 0
+agent.proxy_ctrl_dir = <%= @proxy_controller_dir %>

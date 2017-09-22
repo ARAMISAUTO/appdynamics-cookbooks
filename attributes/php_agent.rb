@@ -6,5 +6,4 @@ default['appdynamics']['php_agent']['owner'] = 'root'
 default['appdynamics']['php_agent']['group'] = 'root'
 default['appdynamics']['php_agent']['proxy']['controller_dir'] = '/tmp/proxy.communication'
 default['appdynamics']['php_agent']['proxy']['log_dir'] = "#{node['appdynamics']['php_agent']['install_dir']}/phpagent/logs"
-
 default['appdynamics']['php_agent']['zip'] = "#{Chef::Config[:file_cache_path]}/AppDynamicsPhpAgent.zip"
