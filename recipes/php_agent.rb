@@ -117,6 +117,23 @@ when 'debian', 'ubuntu'
     group agent['group']
     mode 0644
     notifies :reload, 'service[apache2]' if resource_exists['service[apache2]']
+    variables(
+      :agent_install_dir => agent['install_dir'],
+      :app_name => node['appdynamics']['app_name'],
+      :controller_accesskey => controller['accesskey'],
+      :controller_host => controller['host'],
+      :controller_port => controller['port'],
+      :controller_ssl => controller['ssl'],
+      :controller_user => controller['user'],
+      :http_proxy_host => http_proxy['host'],
+      :http_proxy_password_file => http_proxy['password_file'],
+      :http_proxy_port => http_proxy['port'],
+      :http_proxy_user => http_proxy['user'],
+      :node_name => node['appdynamics']['node_name'],
+      :proxy_controller_dir => proxy['controller_dir'],
+      :proxy_log_dir => proxy['log_dir'],
+      :tier_name => node['appdynamics']['tier_name']
+    )
   end
 
   # Enable appdynamics extension
