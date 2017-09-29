@@ -73,6 +73,7 @@ file "#{agent['install_dir']}/phpagent/runme.sh" do
 end
 execute "#{agent['install_dir']}/phpagent/runme.sh" do
   live_stream true
+  not_if 'php -m | grep -q appdynamics_agent'
 end
 
 # Create proxy controller directory
@@ -138,7 +139,8 @@ when 'debian', 'ubuntu'
 
   # Enable appdynamics extension
   execute 'php5enmod appdynamics_agent' do
-    notifies :restart, 'service[apache2]' if resource_exists['service[apache2]']
+    notifies :reload, 'service[apache2]' if resource_exists['service[apache2]']
+    not_if 'php -m | grep -q appdynamics_agent'
   end
 end
 
