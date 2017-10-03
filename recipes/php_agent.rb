@@ -67,6 +67,13 @@ template "#{agent['install_dir']}/phpagent/installVars" do
   )
 end
 
+# Apache must be stopped prior to installation
+service 'apache2_stop' do
+  service_name 'apache2'
+  action :stop
+  not_if 'php -m | grep -q appdynamics_agent'
+end
+
 # Run installation script
 file "#{agent['install_dir']}/phpagent/runme.sh" do
   mode 0700
@@ -140,6 +147,13 @@ when 'debian', 'ubuntu'
   # Enable appdynamics extension
   execute 'php5enmod appdynamics_agent' do
     notifies :reload, 'service[apache2]' if resource_exists['service[apache2]']
+    not_if 'php -m | grep -q appdynamics_agent'
+  end
+
+  # Apache must be stopped prior to installation
+  service 'apache2_start' do
+    service_name 'apache2'
+    action :start
     not_if 'php -m | grep -q appdynamics_agent'
   end
 end
