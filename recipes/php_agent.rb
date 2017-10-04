@@ -97,6 +97,34 @@ directory proxy['log_dir'] do
   mode 0700
 end
 
+# TODO : Create appdynamics-proxy service
+# TODO : Handle JVM configuration
+# TODO : User https://supermarket.chef.io/cookbooks/poise-service
+# https://github.com/ARAMISAUTO/com.aramisauto.platform/blob/master/provisioners/salt/srv/salt/base/appdynamics/php.sls
+# bash ./runProxy -d /opt/appdynamics/appdynamics-php-agent/proxy -r /opt/appdynamics/appdynamics-php-agent/proxy /tmp/proxy.communication /opt/appdynamics/appdynamics-php-agent/logs
+systemd_unit 'appdynamics-proxy.service' do
+  content <<-EOT.gsub(/^\s+/, '')
+  [Unit]
+  Description=AppDynamics agent proxy
+
+  [Service]
+  Type=simple
+  User=#{agent['owner']}
+  Group=#{agent['group']}
+  ExecStart=#{agent['install_dir']}/phpagent/proxy/runProxy -d #{agent['install_dir']}/phpagent/proxy -r #{agent['install_dir']}/phpagent/proxy #{agent['proxy']['controller_dir']} #{agent['proxy']['log_dir']}
+  Restart=on-failure
+  TimeoutSec=30
+
+  [Install]
+  WantedBy=network.target
+  EOT
+  action [:create, :enable, :reload_or_restart]
+end
+
+service 'appdynamics-proxy' do
+  action :nothing
+end
+
 # TODO : handle all versions of PHP not only php-5
 
 # Move appdynamics's PHP extension ini file to fit the Debian PHP standard
@@ -125,6 +153,7 @@ when 'debian', 'ubuntu'
     group agent['group']
     mode 0644
     notifies :reload, 'service[apache2]' if resource_exists['service[apache2]']
+    notifies :restart, 'service[appdynamics-proxy]'
     variables(
       :agent_install_dir => agent['install_dir'],
       :app_name => node['appdynamics']['app_name'],
@@ -158,26 +187,3 @@ when 'debian', 'ubuntu'
   end
 end
 
-# TODO : Create appdynamics-proxy service
-# TODO : Handle JVM configuration
-# TODO : User https://supermarket.chef.io/cookbooks/poise-service
-# https://github.com/ARAMISAUTO/com.aramisauto.platform/blob/master/provisioners/salt/srv/salt/base/appdynamics/php.sls
-# bash ./runProxy -d /opt/appdynamics/appdynamics-php-agent/proxy -r /opt/appdynamics/appdynamics-php-agent/proxy /tmp/proxy.communication /opt/appdynamics/appdynamics-php-agent/logs
-systemd_unit 'appdynamics-proxy.service' do
-  content <<-EOT.gsub(/^\s+/, '')
-  [Unit]
-  Description=AppDynamics agent proxy
-
-  [Service]
-  Type=simple
-  User=#{agent['owner']}
-  Group=#{agent['group']}
-  ExecStart=#{agent['install_dir']}/phpagent/proxy/runProxy -d #{agent['install_dir']}/phpagent/proxy -r #{agent['install_dir']}/phpagent/proxy #{agent['proxy']['controller_dir']} #{agent['proxy']['log_dir']}
-  Restart=on-failure
-  TimeoutSec=30
-
-  [Install]
-  WantedBy=network.target
-  EOT
-  action [:create, :enable, :reload_or_restart]
-end

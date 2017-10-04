@@ -11,3 +11,6 @@ agent.accountName = <%= @controller_user %>
 agent.accountAccessKey = <%= @controller_accesskey %>
 agent.auto_launch_proxy = 0
 agent.proxy_ctrl_dir = <%= @proxy_controller_dir %>
+<% if @controller_port == 443 %>
+agent.controller.ssl.enabled = 1
+<% end %>
