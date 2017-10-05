@@ -87,6 +87,7 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
   owner agent['owner']
   group agent['group']
   mode '0600'
+  notifies :restart, 'service[appdynamics_machine_agent]'
 
   variables(
     :app_name => node['appdynamics']['app_name'],
@@ -102,8 +103,10 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
     :http_proxy_host => http_proxy['host'],
     :http_proxy_port => http_proxy['port'],
     :http_proxy_user => http_proxy['user'],
-    :http_proxy_password_file => http_proxy['password_file']
-  )
+    :http_proxy_password_file => http_proxy['password_file'],
+
+    :sim_enabled => agent['sim_enabled']
+    )
 end
 
 package 'daemon'

@@ -20,3 +20,5 @@ default['appdynamics']['machine_agent']['run_sh']['source'] = 'machine/run.sh.er
 
 default['appdynamics']['machine_agent']['java'] = '/usr/bin/java'
 default['appdynamics']['machine_agent']['java_params'] = '-Xmx32m'
+
+default['appdynamics']['machine_agent']['sim_enabled'] = false
