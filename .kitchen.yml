@@ -78,6 +78,9 @@ suites:
     excludes:
     - windows2012r2
     - windows2008r2
+    attributes:
+      java:
+        openjdk_packages: ['openjdk-7-jdk']
 
   - name: java_agent
     run_list:

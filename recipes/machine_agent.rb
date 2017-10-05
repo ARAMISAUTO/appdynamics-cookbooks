@@ -106,6 +106,7 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
   )
 end
 
+package 'daemon'
 service 'appdynamics_machine_agent' do
   supports [:start, :stop, :restart]
   action [:enable, :start]
