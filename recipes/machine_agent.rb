@@ -69,25 +69,13 @@ execute 'unzip-appdynamics-machine-agent' do
   command "unzip -qqo #{agent_zip}"
 end
 
-template agent['init_script'] do
-  cookbook agent['init']['cookbook']
-  source agent['init']['source']
-  variables(
-    :install_dir => agent['install_dir'],
-    :pid_file => agent['pid_file']
-  )
-  owner agent['owner']
-  group agent['group']
-  mode '0744'
-end
-
 template "#{agent['install_dir']}/conf/controller-info.xml" do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
   owner agent['owner']
   group agent['group']
   mode '0600'
-  notifies :restart, 'service[appdynamics_machine_agent]'
+  notifies :restart, 'poise_service[appdynamics-machine-agent]'
 
   variables(
     :app_name => node['appdynamics']['app_name'],
@@ -109,8 +97,6 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
     )
 end
 
-package 'daemon'
-service 'appdynamics_machine_agent' do
-  supports [:start, :stop, :restart]
-  action [:enable, :start]
+poise_service 'appdynamics-machine-agent' do
+  command "/usr/bin/java -Xmx32m -jar #{agent['install_dir']}/machineagent.jar"
 end
