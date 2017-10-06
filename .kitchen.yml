@@ -41,8 +41,7 @@ platforms:
       network:
         - ["forwarded_port", {guest: 3389, host: 33390}]
   - name: debian-8.8
-    driver:
-      linked_clone: true
+  - name: debian-8.7
 
 suites:
   - name: nodejs_agent
@@ -64,6 +63,7 @@ suites:
   - name: python_agent
     run_list:
       - recipe[apt::default]
+      - recipe[python::default]
       - recipe[appdynamics::python_agent]
     attributes:
       appdynamics:
